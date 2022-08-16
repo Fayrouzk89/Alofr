@@ -15,7 +15,7 @@ class LangScreen extends GetView<LangController> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () async => true,
       child: Scaffold(
         backgroundColor: ColorConstants.whiteBack,
         appBar: MainAppBar(title: "الوفرة"),
@@ -94,6 +94,7 @@ class LangScreen extends GetView<LangController> {
     }
 
     Get.updateLocale(_appLocale);
+    LocalString.LoadStaticLang(buildContext);
     Get.toNamed(Routes.AUTH);
   }
 }

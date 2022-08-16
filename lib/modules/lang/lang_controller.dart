@@ -70,11 +70,7 @@ class LangController extends GetxController {
           password: loginPasswordController.text,
         ),
       );
-      final prefs = Get.find<SharedPreferences>();
-      if (res!.token.isNotEmpty) {
-        prefs.setString(StorageConstants.token, res.token);
-        Get.toNamed(Routes.HOME);
-      }
+
     }
   }
 

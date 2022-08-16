@@ -23,7 +23,7 @@ import '../../shared/widgets/gradient_background.dart';
 import '../../shared/widgets/input_field.dart';
 import '../../shared/widgets/input_password.dart';
 import 'auth_controller.dart';
-
+import '../../globals.dart' as globals;
 class PasswordScreen extends StatefulWidget {
   @override
   State<PasswordScreen> createState() => _PasswordScreenState();
@@ -49,10 +49,12 @@ class _PasswordScreenState extends State<PasswordScreen> {
         Scaffold(
           //resizeToAvoidBottomInset: false,
           appBar: ForgetAppBar(
-              LocalString.getStringValue(context, 'code_send') ??
-                  "تم ارسال كود تأكيد إلى رقم الهاتف الخاص بك",
+    (globals.activateMsg=="")?
+    ( LocalString.getStringValue(context, 'code_send_activate') ??
+        "تم ارسال كود تأكيد إلى رقم الهاتف الخاص بك"):globals.activateMsg
+             ,
               false),
-          backgroundColor: ColorConstants.whiteBack,
+          backgroundColor: ColorConstants.greyBack,
           body: Stack(
             children: [
               Padding(
@@ -96,32 +98,6 @@ class _PasswordScreenState extends State<PasswordScreen> {
                       color: ColorConstants.textColor,
                       fontFamily: CommonConstants.largeTextFont),
                 )),
-            /*
-            PinCodeFields(
-              length: 4,
-              fieldBorderStyle: FieldBorderStyle.Square,
-              responsive: false,
-              fieldHeight: 60.0,
-              fieldWidth: 60.0,
-              borderWidth: 1.0,
-              activeBorderColor: Colors.pink,
-              activeBackgroundColor: Colors.pink.shade100,
-              borderRadius: BorderRadius.circular(10.0),
-              keyboardType: TextInputType.number,
-              autoHideKeyboard: false,
-              fieldBackgroundColor: Colors.black12,
-              borderColor: Colors.black38,
-              textStyle: TextStyle(
-                fontSize: 30.0,
-                fontWeight: FontWeight.bold,
-              ),
-              onComplete: (output) {
-                controller.code=output;
-                print(output);
-              },
-            ),
-
-             */
             CommonWidget.rowHeight(),
         Padding(
             padding: const EdgeInsets.symmetric(
@@ -132,7 +108,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
                 color: Colors.green.shade600,
                 fontWeight: FontWeight.bold,
               ),
-              length: 4,
+              length: 5,
               obscureText: true,
               obscuringCharacter: '*',
 
@@ -142,8 +118,8 @@ class _PasswordScreenState extends State<PasswordScreen> {
               blinkWhenObscuring: true,
               animationType: AnimationType.fade,
               validator: (v) {
-                if (v!.length < 4) {
-                  return LocalString.getStringValue(context, 'code_length') ?? "طول الكود 4 محارف";
+                if (v!.length < 5) {
+                  return LocalString.getStringValue(context, 'code_length') ?? "طول الكود 5 محارف";
                 } else {
                   return null;
                 }
@@ -151,8 +127,8 @@ class _PasswordScreenState extends State<PasswordScreen> {
               pinTheme: PinTheme(
                 shape: PinCodeFieldShape.box,
                 activeColor: ColorConstants.hintColor,
-                selectedFillColor: ColorConstants.darkGray,
-                inactiveFillColor: ColorConstants.notActiveColor,
+                selectedFillColor: ColorConstants.whiteBack,
+                inactiveFillColor: ColorConstants.whiteBack,
                 disabledColor: ColorConstants.greenColor,
                 errorBorderColor: ColorConstants.greenColor,
                 borderRadius: BorderRadius.circular(5),
@@ -222,7 +198,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
                   size: Size(SizeConfig().screenWidth * 0.8,
                       CommonConstants.roundedHeight),
                   pressed: () {
-                    controller.enterCode(context, controller);
+                    controller.enterResetCode(context, controller);
                   })),
         ),
         Expanded(

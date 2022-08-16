@@ -19,7 +19,7 @@ class SplashController extends GetxController {
       if (storage.getString(StorageConstants.lang) == null) {
         Get.toNamed(Routes.Lang);
       }
-      else if (storage.getString(StorageConstants.token) != null) {
+      else if (storage.getString(StorageConstants.accessToken) != null && storage.getString(StorageConstants.accessToken) != '' ) {
         Get.toNamed(Routes.HOME);
       } else {
         Get.toNamed(Routes.AUTH);

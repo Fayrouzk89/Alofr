@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "159751033565",
+    "project_id": "wfratik",
+    "storage_bucket": "wfratik.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159751033565:android:6a1246c923a15f22034134",
+        "android_client_info": {
+          "package_name": "com.aqdeveloper.billing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "159751033565-m4q6mhgt4r4g9rn95bejnhbdq7ufm4q2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOGSzsfO66ldUZ5JRO_STaLhiTfAJnrvs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "159751033565-m4q6mhgt4r4g9rn95bejnhbdq7ufm4q2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

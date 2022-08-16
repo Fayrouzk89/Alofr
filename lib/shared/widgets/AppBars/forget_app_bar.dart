@@ -5,13 +5,14 @@ import 'package:get/get.dart';
 import '../../../routes/app_pages.dart';
 import '../../services/LocalString.dart';
 import '../custom_rounded.dart';
+import 'app_bar_image_logo.dart';
 
 class ForgetAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
   final bool? isBold;
   final double barHeight = 160.0;
 
-  ForgetAppBar(this.title,this.isBold) : super();
+  ForgetAppBar(this.title, this.isBold) : super();
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight + 150.0);
@@ -20,35 +21,39 @@ class ForgetAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        PreferredSize(
-            child: Container(
-              color: ColorConstants.greenColor,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    alignment: Alignment.center, // use aligment
-                    child: Image.asset('images/title.png',
-                        height: 150, width: 150, fit: BoxFit.cover),
-                  )
-                ],
-              ),
-            ),
-            preferredSize: Size.fromHeight(kToolbarHeight + 80)),
+        AppBarImageLogo(),
         Padding(
-          padding: const EdgeInsets.only(top: 8.0,bottom: 8),
-          child: Text(
-           title!,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: CommonConstants.meduimText,
-                color: ColorConstants.textColor,
-                fontFamily: CommonConstants.largeTextFont,
-                fontWeight: isBold!?FontWeight.bold:FontWeight.normal
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Container(
+            color: ColorConstants.white,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  //width: double.infinity,
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.symmetric(horizontal: 1, vertical: 10),
+                  child: Align(
+                      alignment: AlignmentDirectional.centerStart,
+                      child: Text(
+                        title!,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: CommonConstants.normalText,
+                            color: ColorConstants.textColor,
+                            fontFamily: CommonConstants.largeTextFont,
+                            fontWeight:
+                                 FontWeight.bold
+                               ),
+                      )),
+                  //color: Colors.red,
+                ),
+              ],
             ),
           ),
         ),
-        Divider(color: ColorConstants.greenColor,thickness:2),
+        Divider(color: ColorConstants.greenColor, thickness: 2),
       ],
     );
   }

@@ -16,6 +16,7 @@ import '../../shared/widgets/border_button.dart';
 import '../../shared/widgets/custom_rounded.dart';
 import '../../shared/widgets/gradient_background.dart';
 import '../../shared/widgets/input_field.dart';
+import '../../shared/widgets/input_field_phone.dart';
 import '../../shared/widgets/input_password.dart';
 import 'auth_controller.dart';
 
@@ -30,7 +31,7 @@ class ForgetScreen extends StatelessWidget {
           //resizeToAvoidBottomInset: false,
           appBar: ForgetAppBar( LocalString.getStringValue(context, 'forget_password') ??
               "هل نسيت كلمة السر",true),
-          backgroundColor: ColorConstants.whiteBack,
+          backgroundColor: ColorConstants.greyBack,
           body: Stack(
             children: [
               Padding(
@@ -66,10 +67,13 @@ class ForgetScreen extends StatelessWidget {
                   style: TextStyle(
                       fontSize: CommonConstants.normalText,
                       color: ColorConstants.textColor,
-                      fontFamily: CommonConstants.largeTextFont),
+                      fontFamily: CommonConstants.largeTextFont,
+                      fontWeight:
+                      FontWeight.bold
+                  ),
                 )),
             CommonWidget.rowHeight(height: 20),
-            InputField(
+            InputFieldPhone(
               controller: controller.forgetPhoneController,
               keyboardType: TextInputType.text,
               //labelText: 'Email address',
@@ -81,17 +85,22 @@ class ForgetScreen extends StatelessWidget {
                       context, 'phone_required') ??
                       'رقم الهاتف حقل مطلوب';
                 }
-                if(value!=null) {
+                if (value.length != CommonConstants.phoneLength) {
+                  return LocalString.getStringValue(context, 'phone_length') ??
+                      'طول الرقم 10 حروف';
+                }
+                if (value != null) {
                   if (!Regex.isPhone(value)) {
                     return LocalString.getStringValue(context, 'phone_error') ??
                         'خطأ في صيغة الهاتف';
                   }
                 }
                 return null;
+
               },
               icon: Icons.phone,
             ),
-            CommonWidget.rowHeight(),
+            CommonWidget.rowHeight(height: 50),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -112,7 +121,7 @@ class ForgetScreen extends StatelessWidget {
                               CommonConstants.roundedHeight),
                           pressed: () {
 
-                          controller.reset(context,controller);
+                          controller.forget(context,controller);
                           })),
                 ),
                 Expanded(

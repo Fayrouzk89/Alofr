@@ -8,4 +8,15 @@ class Regex {
     final regExp = RegExp(pattern);
     return regExp.hasMatch(email);
   }
+  static bool getphone(String? phone) {
+    var string = '05';
+    return phone!.startsWith(string);
+  }
+
+  static bool isPassword(String value) {
+    const pattern = r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)";
+    final regExp = RegExp(pattern);
+    return regExp.hasMatch(value);
+  }
+
 }

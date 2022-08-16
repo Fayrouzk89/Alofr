@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+
 import 'home_controller.dart';
 
 class HomeBinding implements Bindings {
@@ -7,5 +8,6 @@ class HomeBinding implements Bindings {
   void dependencies() {
     Get.lazyPut<HomeController>(
         () => HomeController(apiRepository: Get.find()));
+
   }
 }

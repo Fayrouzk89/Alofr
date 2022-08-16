@@ -19,7 +19,7 @@ class AuthScreen extends GetView<AuthController> {
     return WillPopScope(
       onWillPop: () async => true,
       child: Scaffold(
-        backgroundColor: ColorConstants.whiteBack,
+        backgroundColor: ColorConstants.greyBack,
         appBar: MainAppBarLong(),
         body: Stack(
           children: [
@@ -90,6 +90,7 @@ class AuthScreen extends GetView<AuthController> {
                   Get.toNamed(Routes.AUTH + Routes.LOGIN, arguments: controller);
             })),
         SizedBox(height: 10.0),
+
         GestureDetector(
           onTap: () {
             Get.toNamed(Routes.HOME);
@@ -106,6 +107,7 @@ class AuthScreen extends GetView<AuthController> {
             ),
           ),
         ),
+
         /*
         GradientButton(
           text: 'Sign In',

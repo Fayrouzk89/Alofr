@@ -45,7 +45,7 @@ class _PasswordScreenState extends State<NewPasswordScreen> {
               LocalString.getStringValue(context, 'welcome_back') ??
                   "أهلا بعودتك",
               true),
-          backgroundColor: ColorConstants.whiteBack,
+          backgroundColor: ColorConstants.greyBack,
           body: Stack(
             children: [
               Padding(
@@ -99,10 +99,11 @@ class _PasswordScreenState extends State<NewPasswordScreen> {
                       'الرمز السري حق مطلوب';
                 }
 
-                if (value.length < 6 || value.length > 15) {
-                  return LocalString.getStringValue(
-                      context, 'password_error') ??
-                      '>6 <15';
+                if(value!=null) {
+                  if (!Regex.isPassword(value)) {
+                    return LocalString.getStringValue(context, 'password_error') ??
+                        'خطأ في صيغة كلمة السر';
+                  }
                 }
 
                 return null;
@@ -126,10 +127,11 @@ class _PasswordScreenState extends State<NewPasswordScreen> {
                       'تأكيد الرمز السري حق مطلوب';
                 }
 
-                if (value.length < 6 || value.length > 15) {
-                  return LocalString.getStringValue(
-                      context, 'password_error') ??
-                      '>6 <15';
+                if(value!=null) {
+                  if (!Regex.isPassword(value)) {
+                    return LocalString.getStringValue(context, 'password_error') ??
+                        'خطأ في صيغة كلمة السر';
+                  }
                 }
                 if (controller.newPasswordEditingController.text !=
                     controller.newPasswordConfirmPasswordController.text) {

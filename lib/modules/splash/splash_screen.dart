@@ -5,10 +5,15 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../routes/app_pages.dart';
 import '../../shared/constants/colors.dart';
 import '../../shared/constants/common.dart';
+import '../../shared/constants/storage.dart';
+import '../../shared/services/LocalString.dart';
 import '../../shared/utils/size_config.dart';
-
+import '../../globals.dart' as globals;
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key? key}) : super(key: key);
   @override
@@ -29,6 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
       audioCache.fixedPlayer?.notificationService.startHeadlessService();
     }
     playSound();
+
   }
 
   @override
@@ -95,13 +101,18 @@ class _SplashScreenState extends State<SplashScreen> {
         curve: Curves.fastLinearToSlowEaseIn,
 
         //your widget
-        child: Container(
+        child: GestureDetector(
+            onTap: (){
+              GetToHome();
+            },
           child:Container(
             alignment: Alignment.center,// use aligment
-            child: Image.asset('images/title.png',
+            child: Image.asset(globals.getLogoImage(),
                 height: 150,
                 width: SizeConfig().screenWidth * 0.5,
-                fit: BoxFit.cover),
+                fit: BoxFit.cover)
+
+            ,
           )
         ),
       ),
@@ -136,6 +147,24 @@ class _SplashScreenState extends State<SplashScreen> {
     );
 
          */
+  }
+  void GetToHome()async
+  {
+    await Future.delayed(Duration(milliseconds: 3000));
+    var storage = Get.find<SharedPreferences>();
+    try {
+      await LocalString.LoadLang();
+      if (storage.getString(StorageConstants.lang) == null) {
+        Get.toNamed(Routes.Lang);
+      }
+      else if (storage.getString(StorageConstants.first_name) != null && storage.getString(StorageConstants.first_name) != '' ) {
+        Get.toNamed(Routes.HOME);
+      } else {
+        Get.toNamed(Routes.AUTH);
+      }
+    } catch (e) {
+      Get.toNamed(Routes.AUTH);
+    }
   }
 
 }

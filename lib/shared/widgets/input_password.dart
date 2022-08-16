@@ -12,16 +12,18 @@ class InputPassword extends StatefulWidget {
   final bool password;
   final String? Function(String?)? validator;
   final IconData? icon;
+  final bool? enabled;
   InputPassword({
     required this.controller,
     this.keyboardType = TextInputType.text,
     this.labelText = '',
     this.placeholder = '',
     this.color = Colors.white,
-    this.fontSize = 22.0,
+    this.fontSize = 18.0,
     this.password = true,
     this.validator,
-    this.icon
+    this.icon,
+    this.enabled
   });
 
   @override
@@ -45,7 +47,8 @@ class _InputPasswordState extends State<InputPassword> {
             fontFamily: CommonConstants.introTextFont
         ),
          isDense: true,
-        fillColor: Colors.grey.shade100,
+        enabled: (widget.enabled==null ||widget.enabled==true)?true:false,
+        fillColor:   ColorConstants.white,
         filled: true,
         floatingLabelBehavior: FloatingLabelBehavior.always,
         prefixIcon: Icon(

@@ -48,5 +48,24 @@
         <key>NSAllowsArbitraryLoads</key>
         <true/>
     </dict>
+    <key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
+    <true/>
+    Camera
+    <key>NSCameraUsageDescription</key>
+    <string>$(PRODUCT_NAME) Want To Access Your Camera to get ad photo</string>
+    Photos
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>$(PRODUCT_NAME) Want To Access Your Camera to get ad photo</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+	<string>$(PRODUCT_NAME) need current location access to add advertisement location</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>$(PRODUCT_NAME) need current location access to add advertisement location</string>
+	<key>io.flutter.embedded_views_preview</key>
+    <string>true</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>googlechromes</string>
+		<string>comgooglemaps</string>
+	</array>
 </dict>
 </plist>

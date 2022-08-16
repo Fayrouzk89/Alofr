@@ -28,8 +28,14 @@ abstract class LocalString {
    return true;
  }
 
+static void LoadStaticLang(BuildContext context)
+{
+  globals.companyName =  LocalString.getStringValue(context, 'companies') ??
+      "الشركات";
+}
  static onLocaleChange(Locale locale){
        AppLocalizationsDelegate specificLocalizationDelegate;
        specificLocalizationDelegate = new AppLocalizationsDelegate(locale);
  }
+
 }

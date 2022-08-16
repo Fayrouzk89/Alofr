@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../constants/colors.dart';
 import '../constants/common.dart';
 
-class InputField extends StatelessWidget {
+class InputField extends StatefulWidget {
   final TextEditingController controller;
   final TextInputType keyboardType;
   final String labelText;
@@ -13,25 +14,44 @@ class InputField extends StatelessWidget {
   final bool password;
   final String? Function(String?)? validator;
   final IconData? icon;
+   bool? enabled;
+   Widget? suffiex;
+   FocusNode? myFocusNode;
   InputField({
     required this.controller,
     this.keyboardType = TextInputType.text,
     this.labelText = '',
     this.placeholder = '',
     this.color = Colors.white,
-    this.fontSize = 22.0,
+    this.fontSize = 15.0,
     this.password = false,
     this.validator,
-    this.icon
+    this.icon,
+    this.enabled,
+    this.suffiex,
+    this.myFocusNode
   });
-  bool _obscureText = true;
+
+  @override
+  State<InputField> createState() => _InputFieldState();
+}
+
+class _InputFieldState extends State<InputField> {
+  bool isenabled = false;
+
   @override
   Widget build(BuildContext context) {
 
     return TextFormField(
+      focusNode: (widget.myFocusNode!=null)?widget.myFocusNode:null,
       autofocus: false,
+      enabled: (widget.enabled==null ||widget.enabled==true)?true:false,
+      //enableInteractiveSelection: true,
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp("^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FFa-zA-Z]+[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FFa-zA-Z-_]*"))
+      ],
       decoration: InputDecoration(
-        hintText: this.placeholder,
+        hintText: this.widget.placeholder,
         hintStyle: TextStyle(
           fontSize:  CommonConstants.hintSizes,
           color: ColorConstants.hintColor,
@@ -39,13 +59,14 @@ class InputField extends StatelessWidget {
           fontFamily: CommonConstants.introTextFont
         ),
         isDense: true,
-        fillColor: Colors.grey.shade100,
+
+        fillColor: ColorConstants.whiteBack,
         filled: true,
         floatingLabelBehavior: FloatingLabelBehavior.always,
         prefixIcon: Icon(
-            this.icon, color:  ColorConstants.hintColor,
+            this.widget.icon, color:  ColorConstants.hintColor,
         ),
-
+         suffixIcon:(widget.suffiex!=null)?widget.suffiex:null,
         contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(32.0),
@@ -56,21 +77,23 @@ class InputField extends StatelessWidget {
         focusedBorder: UnderlineInputBorder(
           borderRadius: BorderRadius.circular(32.0),
           borderSide: BorderSide(
-            color: this.color,width: 1.0,
+            color: this.widget.color,width: 1.0,
           ),
         ),
       ),
-      controller: this.controller,
+    //  enabled:(widget.enabled==null ||widget.enabled==true)?true:false,
+
+      controller: this.widget.controller,
       style: TextStyle(
         color: ColorConstants.textColor,
         fontFamily: CommonConstants.introTextFont,
-        fontSize: fontSize,
+        fontSize:  widget.fontSize,
         fontWeight: FontWeight.normal,
       ),
-      keyboardType: this.keyboardType,
-      obscureText: this.password,
+      keyboardType: this.widget.keyboardType,
+      obscureText: this.widget.password,
       autocorrect: false,
-      validator: this.validator,
+      validator: this.widget.validator,
 
     );
   }

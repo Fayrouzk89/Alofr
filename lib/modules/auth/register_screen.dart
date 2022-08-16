@@ -1,10 +1,14 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../routes/app_pages.dart';
 import '../../shared/constants/colors.dart';
 import '../../shared/constants/common.dart';
+import '../../shared/constants/storage.dart';
 import '../../shared/services/LocalString.dart';
+import '../../shared/services/MessageHelper.dart';
 import '../../shared/utils/common_widget.dart';
 import '../../shared/utils/regex.dart';
 import '../../shared/utils/size_config.dart';
@@ -15,9 +19,10 @@ import '../../shared/widgets/border_button.dart';
 import '../../shared/widgets/custom_rounded.dart';
 import '../../shared/widgets/gradient_background.dart';
 import '../../shared/widgets/input_field.dart';
+import '../../shared/widgets/input_field_phone.dart';
 import '../../shared/widgets/input_password.dart';
 import 'auth_controller.dart';
-
+import '../../globals.dart' as globals;
 class RegisterScreen extends StatelessWidget {
   final AuthController controller = Get.arguments;
 
@@ -27,15 +32,17 @@ class RegisterScreen extends StatelessWidget {
       children: [
         Scaffold(
           //resizeToAvoidBottomInset: false,
-          appBar: AuthAppBar(),
-          backgroundColor: ColorConstants.whiteBack,
+          appBar: AuthAppBar(title:  LocalString.getStringValue(context, 'do_buy_show') ??
+              "هل تود النظر على حزم الإعلانات الآن ؟",title2:  LocalString.getStringValue(context, 'show_buy') ??
+              "النظر",),
+          backgroundColor: ColorConstants.greyBack,
           body: Stack(
             children: [
               Padding(
                 padding:  EdgeInsets.only(bottom: CommonConstants.paddingBottom),
                 child: Container(
                   alignment: Alignment.topCenter,
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  padding: EdgeInsets.symmetric(horizontal: 12.0,vertical: 12),
                   child: _buildForms(context),
                 ),
               ),
@@ -106,6 +113,7 @@ class RegisterScreen extends StatelessWidget {
                   // optional flex property if flex is 1 because the default flex is 1
                   flex: 1,
                   child: InputField(
+
                     controller: controller.registerLastController,
                     keyboardType: TextInputType.text,
                     //labelText: 'Email address',
@@ -126,7 +134,7 @@ class RegisterScreen extends StatelessWidget {
               ],
             ),
             CommonWidget.rowHeight(height: 10.0),
-            InputField(
+            InputFieldPhone(
               controller: controller.registerPhoneController,
               keyboardType: TextInputType.text,
               //labelText: 'Email address',
@@ -135,8 +143,13 @@ class RegisterScreen extends StatelessWidget {
               validator: (value) {
                 if (value!.isEmpty) {
                   return LocalString.getStringValue(
-                          context, 'phone_required') ??
+                      context, 'phone_required') ??
                       'رقم الهاتف حقل مطلوب';
+                }
+                if (value.length!=CommonConstants.phoneLength)  {
+                  return LocalString.getStringValue(
+                      context, 'phone_length') ??
+                      'طول الرقم 10 حروف';
                 }
                 if (value!=null ) {
                   if (!Regex.isPhone(value)) {
@@ -156,11 +169,12 @@ class RegisterScreen extends StatelessWidget {
                   // optional flex property if flex is 1 because the default flex is 1
                   flex: 1,
                   child: Container(
+
                     child: DropdownButtonFormField2(
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: Colors.grey.shade100,
-                        focusColor: Colors.grey.shade100,
+                        fillColor:ColorConstants.whiteBack,
+                        focusColor: ColorConstants.whiteBack,
                         focusedBorder:   OutlineInputBorder(
                           // width: 0.0 produces a thin "hairline" border
                           borderRadius: BorderRadius.circular(25),
@@ -211,10 +225,29 @@ class RegisterScreen extends StatelessWidget {
                         }
                       },
                       onChanged: (value) {
-                        //Do something when changing the item if you want.
+                        selectedValue = value.toString();
+                        controller.gender=selectedValue.toString();
+                        int x=(genderItems.indexOf(value.toString()));
+                        if(x==0)
+                        {
+                          controller.gender="male";
+                        }
+                        else{
+                          controller.gender="female";
+                        }
                       },
                       onSaved: (value) {
                         selectedValue = value.toString();
+                        controller.gender=selectedValue.toString();
+                        int x=(genderItems.indexOf(value.toString()));
+                        if(x==0)
+                          {
+                            controller.gender="male";
+                          }
+                          else{
+                          controller.gender="female";
+                        }
+
                       },
                     ),
                   ),
@@ -227,8 +260,8 @@ class RegisterScreen extends StatelessWidget {
                     child: DropdownButtonFormField2(
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: Colors.grey.shade100,
-                        focusColor: Colors.grey.shade100,
+                        fillColor: ColorConstants.whiteBack,
+                        focusColor: ColorConstants.whiteBack,
                         focusedBorder:   OutlineInputBorder(
                           // width: 0.0 produces a thin "hairline" border
                           borderRadius: BorderRadius.circular(25),
@@ -278,9 +311,27 @@ class RegisterScreen extends StatelessWidget {
                               'فرد أو شركة';
                         }
                       },
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        selectedCompany = value.toString();
+                        int x=(companyItems.indexOf(value.toString()));
+                        if(x==0)
+                        {
+                          controller.individual="user";
+                        }
+                        else{
+                          controller.individual="company";
+                        }
+                      },
                       onSaved: (value) {
                         selectedCompany = value.toString();
+                        int x=(companyItems.indexOf(value.toString()));
+                        if(x==0)
+                        {
+                          controller.individual="user";
+                        }
+                        else{
+                          controller.individual="company";
+                        }
                       },
                     ),
                   ),
@@ -304,10 +355,11 @@ class RegisterScreen extends StatelessWidget {
                       'الرمز السري حق مطلوب';
                 }
 
-                if (value.length < 6 || value.length > 15) {
-                  return LocalString.getStringValue(
-                          context, 'password_error') ??
-                      '>6 <15';
+                if(value!=null) {
+                  if (!Regex.isPassword(value)) {
+                    return LocalString.getStringValue(context, 'password_error') ??
+                        'خطأ في صيغة كلمة السر';
+                  }
                 }
 
                 return null;
@@ -331,10 +383,11 @@ class RegisterScreen extends StatelessWidget {
                       'تأكيد الرمز السري حق مطلوب';
                 }
 
-                if (value.length < 6 || value.length > 15) {
-                  return LocalString.getStringValue(
-                          context, 'password_error') ??
-                      '>6 <15';
+                if(value!=null) {
+                  if (!Regex.isPassword(value)) {
+                    return LocalString.getStringValue(context, 'password_error') ??
+                        'خطأ في صيغة كلمة السر';
+                  }
                 }
                 if (controller.registerPasswordController.text !=
                     controller.registerConfirmPasswordController.text) {
@@ -368,4 +421,5 @@ class RegisterScreen extends StatelessWidget {
       ),
     );
   }
+
 }

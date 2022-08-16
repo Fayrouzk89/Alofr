@@ -1,7 +1,7 @@
 
 import 'package:billing/shared/shared.dart';
 import 'package:flutter/material.dart';
-
+import '../../../globals.dart' as globals;
 class MainAppBarLong extends StatelessWidget implements PreferredSizeWidget {
   final double barHeight = 100.0;
   MainAppBarLong({Key? key}) : super(key: key);
@@ -19,7 +19,7 @@ class MainAppBarLong extends StatelessWidget implements PreferredSizeWidget {
               children: <Widget>[
                 Container(
                   alignment: Alignment.center,// use aligment
-                  child: Image.asset('images/title.png',
+                  child: Image.asset(globals.getLogoImage(),
                       height: 150,
                       width: 150,
                       fit: BoxFit.cover),

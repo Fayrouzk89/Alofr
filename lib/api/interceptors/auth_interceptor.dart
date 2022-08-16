@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:get/get_connect/http/src/request/request.dart';
-
+import '../../globals.dart' as globals;
 FutureOr<Request> authInterceptor(request) async {
   // final token = StorageService.box.pull(StorageItems.accessToken);
 

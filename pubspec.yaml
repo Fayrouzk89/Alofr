@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.3+4
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -30,13 +30,14 @@ dependency_overrides:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  #flutter_launcher_icons: ^0.9.3
   get: ^4.6.5
   flutter:
     sdk: flutter
   flutter_localizations: # Add this line
     sdk: flutter         # Add this line
   intl: any
-  http: ^0.13.4
+  http: any
   progress_dialog: ^1.2.4
   shared_preferences: ^2.0.5
   url_launcher: 5.5.0  # ^6.0.6
@@ -45,20 +46,65 @@ dependencies:
   flutter_easyloading: ^3.0.0
   flutter_svg: ^0.21.0+1
   flutter_staggered_grid_view: ^0.4.0
-  cached_network_image: ^3.0.0
+  #cached_network_image: ^2.5.0
   wave: ^0.2.0
   avatar_glow: ^2.0.2
   dropdown_button2: ^1.4.0
+  image_picker: ^0.6.6+1
+  chips_choice: ^2.0.1
+  chip_list: ^2.3.3+8
+  font_awesome_flutter: ^8.8.1
+  flutter_lala_share: ^0.0.1
+  shimmer_animation: ^2.0.0
+  firebase_messaging: ^9.0.0-1.0.nullsafety.2
+  flutter_local_notifications: any
+  firebase_core: any
+  webview_flutter:
+
+
+
+
+
+
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
- #flutter_pin_code_fields: ^7.0.0
+  #flutter_pin_code_fields: ^7.0.0
   pin_code_fields: ^7.4.0
   timer_builder: ^2.0.0
   animated_widgets: ^1.1.0
-  audioplayers: ^0.20.1
+  audioplayers: any #^0.20.1
+  multi_image_picker: ^4.8.1
+  #provider: ^5.0.0
+  modal_progress_hud: ^0.1.3
+  path_provider: ^2.0.1
+  #google_maps_flutter: ^0.0.3
+  flutter_google_places: ^0.3.0
+  #location: ^1.4.1
+  carousel_slider: ^4.1.1
+  place_picker: ^0.9.18-nullsafety
+  dots_indicator: ^2.1.0
+  dio: ^4.0.6
+  device_info: any #^1.0.0
+  google_maps_flutter: ^1.2.0 #^0.5.24+1
+  cached_network_image: ^3.2.0
+  open_location_picker: ^0.1.3
+  geocoder: ^0.2.1
+
+  location: ^2.0.0 #any #^4.0.0-nullsafety.0
+  flutter_bloc: ^8.0.0
+  auto_size_text: ^3.0.0
+  flutter_absolute_path: ^1.0.4
+  sweetalert: any
+  flutter_html: ^0.8.2
+
+
+
+
+
+
 
 dev_dependencies:
   flutter_test:
@@ -76,6 +122,12 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 
+#flutter_icons:
+  #android: true
+  #ios: true
+  #image_path: "images/final.jpg"
+  # optionally, as transparency is not allowed on app store
+  # remove_alpha_ios: true
 flutter:
   fonts:
     - family: Segoe_UI
@@ -85,6 +137,10 @@ flutter:
       fonts:
         - asset: fonts/Roboto-Bold.ttf
         - asset: fonts/Roboto-Regular.ttf
+    - family: SF-Pro-Display
+      fonts:
+        - asset: fonts/SF-Pro-Display-Bold.otf
+
 
 
 

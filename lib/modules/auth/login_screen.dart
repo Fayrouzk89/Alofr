@@ -1,6 +1,8 @@
+import 'package:billing/models/responses/login_response.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../models/UserInfo.dart';
 import '../../routes/app_pages.dart';
 import '../../shared/constants/colors.dart';
 import '../../shared/constants/common.dart';
@@ -14,34 +16,49 @@ import '../../shared/widgets/border_button.dart';
 import '../../shared/widgets/custom_rounded.dart';
 import '../../shared/widgets/gradient_background.dart';
 import '../../shared/widgets/input_field.dart';
+import '../../shared/widgets/input_field_phone.dart';
 import '../../shared/widgets/input_password.dart';
 import 'auth_controller.dart';
+import '../../globals.dart' as globals;
 
-class LoginScreen extends StatelessWidget {
-  final AuthController controller = Get.arguments;
+class LoginScreen extends StatefulWidget {
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
 
+class _LoginScreenState extends State<LoginScreen> {
+   AuthController controller = Get.arguments;
+  @override
+  initState() {
+    super.initState();
+     controller!.loginFormKey=GlobalKey<FormState>();
+    // Add listeners to this class
+  }
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Scaffold(
-          appBar: AuthAppBar(),
-          backgroundColor: ColorConstants.whiteBack,
-          body:  Stack(
+          appBar: AuthAppBar(
+            title: LocalString.getStringValue(context, 'do_buy') ??
+                "هل تريد شراء حزمة",
+            title2: LocalString.getStringValue(context, 'buy') ?? "شراء",
+          ),
+          backgroundColor: ColorConstants.greyBack,
+          body: Stack(
             children: [
               Padding(
-                padding:  EdgeInsets.only(bottom: CommonConstants.paddingBottom),
+                padding: EdgeInsets.only(bottom: CommonConstants.paddingBottom),
                 child: Container(
-                    alignment: Alignment.topCenter,
-                    padding: EdgeInsets.symmetric(horizontal: CommonConstants.paddingHorizontal),
-                    child: _buildForms(context),
+                  alignment: Alignment.topCenter,
+                  padding: EdgeInsets.symmetric(
+                      horizontal: CommonConstants.paddingHorizontal),
+                  child: _buildForms(context),
                 ),
               ),
               FooterWidget()
             ],
           ),
-
-
         ),
       ],
     );
@@ -69,7 +86,7 @@ class LoginScreen extends StatelessWidget {
                       fontFamily: CommonConstants.largeTextFont),
                 )),
             CommonWidget.rowHeight(height: 20),
-            InputField(
+            InputFieldPhone(
               controller: controller.loginStaffController,
               keyboardType: TextInputType.text,
               //labelText: 'Email address',
@@ -81,7 +98,11 @@ class LoginScreen extends StatelessWidget {
                           context, 'phone_required') ??
                       'رقم الهاتف حقل مطلوب';
                 }
-                if(value!=null) {
+                if (value.length != CommonConstants.phoneLength) {
+                  return LocalString.getStringValue(context, 'phone_length') ??
+                      'طول الرقم 10 حروف';
+                }
+                if (value != null) {
                   if (!Regex.isPhone(value)) {
                     return LocalString.getStringValue(context, 'phone_error') ??
                         'خطأ في صيغة الهاتف';
@@ -91,7 +112,6 @@ class LoginScreen extends StatelessWidget {
               },
               icon: Icons.phone,
             ),
-
             CommonWidget.rowHeight(height: 10),
             InputPassword(
               controller: controller.loginPasswordController,
@@ -108,11 +128,12 @@ class LoginScreen extends StatelessWidget {
                           context, 'password_required') ??
                       'الرمز السري حق مطلوب';
                 }
-
-                if (value.length < 6 || value.length > 15) {
-                  return LocalString.getStringValue(
-                          context, 'password_error') ??
-                      '>6 <15';
+                if (value != null) {
+                  if (!Regex.isPassword(value)) {
+                    return LocalString.getStringValue(
+                            context, 'password_error') ??
+                        'خطأ في صيغة كلمة السر';
+                  }
                 }
 
                 return null;
@@ -120,21 +141,19 @@ class LoginScreen extends StatelessWidget {
               icon: Icons.lock,
             ),
             CommonWidget.rowHeight(height: 10),
-        GestureDetector(
-          onTap: () {
-            Get.toNamed(Routes.AUTH + Routes.Forget,
-                arguments: controller);
-          },
+            GestureDetector(
+              onTap: () {
+                Get.toNamed(Routes.AUTH + Routes.Forget, arguments: controller);
+              },
               child: Text(
                 LocalString.getStringValue(context, 'forget_password') ??
                     "هل نسيت كلمة المرور",
-                textAlign: TextAlign.center,
+                // textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: CommonConstants.normalText,
                     color: ColorConstants.textColor,
                     fontFamily: CommonConstants.largeTextFont,
-                    fontWeight: FontWeight.bold
-                ),
+                    fontWeight: FontWeight.bold),
               ),
             ),
             CommonWidget.rowHeight(height: 10),
@@ -152,7 +171,7 @@ class LoginScreen extends StatelessWidget {
                     size: Size(SizeConfig().screenWidth * 0.8,
                         CommonConstants.roundedHeight),
                     pressed: () {
-                      controller.login(context);
+                      doLogin(context);
                     })),
             CommonWidget.rowHeight(height: 10),
             Container(
@@ -173,30 +192,23 @@ class LoginScreen extends StatelessWidget {
                         arguments: controller);
                   },
                 )),
-            /*
-            Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(
-                    horizontal: CommonConstants.horizontalPaddingButton,
-                    vertical: CommonConstants.verticalPaddingButton),
-                child: CustomRounded(
-                  text: LocalString.getStringValue(context, 'continue_as_guest') ??
-                      "متابعة كضيف",
-                  textSize: CommonConstants.textButton,
-                  textColor: ColorConstants.white,
-                  color: Colors.black54,
-                  size: Size(SizeConfig().screenWidth * 0.8,
-                      CommonConstants.roundedHeight),
-                  pressed: () {
-                    Get.toNamed(Routes.HOME);
-                  },
-                ))
-
-             */
-
           ],
         ),
       ),
     );
+  }
+
+  void doLogin(BuildContext context) async {
+    UserInfo userInfo = UserInfo(
+        id: 0,
+        first_name: '',
+        second_name: '',
+        gender: '',
+        mobile: controller.loginStaffController.text,
+        password: controller.loginPasswordController.text,
+        password_confirmation: '',
+        type: '');
+    globals.userInfo = userInfo;
+    LoginResponse? res = await controller.login(context, userInfo);
   }
 }
