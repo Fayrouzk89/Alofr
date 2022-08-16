@@ -110,6 +110,7 @@ class PlacePickerState extends State<CustomPlacePicker> {
           children: <Widget>[
             Expanded(
               child: GoogleMap(
+
                 initialCameraPosition: CameraPosition(
                   target: widget.displayLocation ?? LatLng(5.6037, 0.1870),
                   zoom: 15,

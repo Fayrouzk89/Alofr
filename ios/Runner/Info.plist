@@ -50,10 +50,9 @@
     </dict>
     <key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
     <true/>
-    Camera
+
     <key>NSCameraUsageDescription</key>
     <string>$(PRODUCT_NAME) Want To Access Your Camera to get ad photo</string>
-    Photos
     <key>NSPhotoLibraryUsageDescription</key>
     <string>$(PRODUCT_NAME) Want To Access Your Camera to get ad photo</string>
     <key>NSLocationWhenInUseUsageDescription</key>
