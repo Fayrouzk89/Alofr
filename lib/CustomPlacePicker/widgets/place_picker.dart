@@ -2,14 +2,16 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:billing/CustomPlacePicker/widgets/search_input.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
-import 'package:place_picker/entities/entities.dart';
-import 'package:place_picker/entities/localization_item.dart';
-import 'package:place_picker/widgets/widgets.dart';
 
+
+import '../entities/localization_item.dart';
+import '../entities/location_result.dart';
+import '../entities/near_by_place.dart';
 import '../uuid.dart';
 
 /// Place picker widget made with map widget from
@@ -39,7 +41,7 @@ class PlacePickerFay extends StatefulWidget {
 }
 
 /// Place picker state
-class PlacePickerState extends State<PlacePicker> {
+class PlacePickerState extends State<PlacePickerFay> {
   final Completer<GoogleMapController> mapController = Completer();
 
   /// Indicator for the selected location
@@ -119,32 +121,7 @@ class PlacePickerState extends State<PlacePicker> {
               markers: markers,
             ),
           ),
-          if (!this.hasSearchTerm)
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  SelectPlaceAction(
-                      getLocationName(),
-                      () => Navigator.of(context).pop(this.locationResult),
-                      widget.localizationItem.tapToSelectLocation),
-                  Divider(height: 8),
-                  Padding(
-                    child: Text(widget.localizationItem.nearBy,
-                        style: TextStyle(fontSize: 16)),
-                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                  ),
-                  Expanded(
-                    child: ListView(
-                      children: nearbyPlaces
-                          .map((it) => NearbyPlaceItem(
-                              it, () => moveToLocation(it.latLng)))
-                          .toList(),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+
         ],
       ),
     );
@@ -251,31 +228,7 @@ class PlacePickerState extends State<PlacePicker> {
 
       List<dynamic> predictions = responseJson['predictions'];
 
-      List<RichSuggestion> suggestions = [];
 
-      if (predictions.isEmpty) {
-        AutoCompleteItem aci = AutoCompleteItem();
-        aci.text = widget.localizationItem.noResultsFound;
-        aci.offset = 0;
-        aci.length = 0;
-
-        suggestions.add(RichSuggestion(aci, () {}));
-      } else {
-        for (dynamic t in predictions) {
-          final aci = AutoCompleteItem()
-            ..id = t['place_id']
-            ..text = t['description']
-            ..offset = t['matched_substrings'][0]['offset']
-            ..length = t['matched_substrings'][0]['length'];
-
-          suggestions.add(RichSuggestion(aci, () {
-            FocusScope.of(context).requestFocus(FocusNode());
-            decodeAndSelectPlace(aci.id);
-          }));
-        }
-      }
-
-      displayAutoCompleteSuggestions(suggestions);
     } catch (e) {
       print(e);
     }
@@ -313,25 +266,7 @@ class PlacePickerState extends State<PlacePicker> {
   }
 
   /// Display autocomplete suggestions with the overlay.
-  void displayAutoCompleteSuggestions(List<RichSuggestion> suggestions) {
-    final RenderBox renderBox = context.findRenderObject();
-    Size size = renderBox.size;
 
-    final RenderBox appBarBox =
-        this.appBarKey.currentContext.findRenderObject();
-
-    clearOverlay();
-
-    this.overlayEntry = OverlayEntry(
-      builder: (context) => Positioned(
-        width: size.width,
-        top: appBarBox.size.height,
-        child: Material(elevation: 1, child: Column(children: suggestions)),
-      ),
-    );
-
-    Overlay.of(context).insert(this.overlayEntry);
-  }
 
   /// Utility function to get clean readable name of a location. First checks
   /// for a human-readable name from the nearby list. This helps in the cases
@@ -490,18 +425,7 @@ class PlacePickerState extends State<PlacePicker> {
           ..formattedAddress = result['formatted_address']
           ..placeId = result['place_id']
           ..postalCode = postalCode
-          ..country = AddressComponent(name: country, shortName: country)
-          ..administrativeAreaLevel1 = AddressComponent(
-              name: administrativeAreaLevel1,
-              shortName: administrativeAreaLevel1)
-          ..administrativeAreaLevel2 = AddressComponent(
-              name: administrativeAreaLevel2,
-              shortName: administrativeAreaLevel2)
-          ..city = AddressComponent(name: city, shortName: city)
-          ..subLocalityLevel1 = AddressComponent(
-              name: subLocalityLevel1, shortName: subLocalityLevel1)
-          ..subLocalityLevel2 = AddressComponent(
-              name: subLocalityLevel2, shortName: subLocalityLevel2);
+         ;
       });
     } catch (e) {
       print(e);

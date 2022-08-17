@@ -84,7 +84,7 @@ dependencies:
   flutter_google_places: ^0.3.0
   #location: ^1.4.1
   carousel_slider: ^4.1.1
-  place_picker: ^0.9.18-nullsafety
+  #place_picker: ^0.9.18-nullsafety
   dots_indicator: ^2.1.0
   dio: ^4.0.6
   device_info: any #^1.0.0

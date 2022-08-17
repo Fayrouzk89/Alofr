@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:geocoder/geocoder.dart';
 import 'package:geocoder/model.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:billing/dioApi/api.dart';
 import 'package:chip_list/chip_list.dart';
@@ -37,7 +38,7 @@ import '../home_controller.dart';
 import '../../../globals.dart' as globals;
 
 
-import 'package:place_picker/place_picker.dart';
+
 
 
 class NewAdds extends StatefulWidget {
@@ -469,7 +470,7 @@ class _FormNewAddsState extends State<FormNewAdds>{
             LatLng? displayLocation = LatLng(
                 double.parse(widget.editProduct!.latitude),
                 double.parse(widget.editProduct!.longitude));
-            LocationResult? result = await Navigator.of(context).push(
+            var result = await Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) =>
                     CustomPlacePicker(globals.MapApiKey, false,
                       displayLocation: displayLocation,))).then((_) {
@@ -482,7 +483,7 @@ class _FormNewAddsState extends State<FormNewAdds>{
 
       }
     else {
-      LocationResult? result = await Navigator.of(context).push(
+      var result = await Navigator.of(context).push(
           MaterialPageRoute(builder: (context) =>
               CustomPlacePicker(globals.MapApiKey, false))).then((_)
       {

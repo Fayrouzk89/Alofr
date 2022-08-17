@@ -6,7 +6,6 @@ import 'package:billing/shared/services/MessageHelper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:place_picker/place_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../models/responses/banners_response.dart';
 import '../../routes/app_pages.dart';
